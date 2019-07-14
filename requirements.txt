@@ -1,0 +1,6 @@
+django
+scrapy
+djangorestframework
+scrapyd 
+python-scrapyd-api
+requests

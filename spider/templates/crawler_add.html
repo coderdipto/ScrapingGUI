@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block contents %}
+<div id="app" class="row">
+    <div class="col-sm-12" style="padding-top: 20px;">
+        <form id="searchForm" action="." method="POST">
+            <div class="form-group">
+                <button type="button" @click="addURL" class="btn btn-primary">Add URL</button>
+            </div>
+            <div v-for="(url, index) in urls">
+                <div class="form-group">
+                    <input name="url" type="text" class="form-control" placeholder="Insert URL" autocomplete="off" style="display: inline; width: 92%;"/>
+                    <button type="button" class="btn btn-danger" @click="deleteURL(index)">Delete</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" @click="addQuery" class="btn btn-primary">Add Query</button>
+            </div>
+            <div v-for="(input, index) in inputs">
+                <div class="form-group">
+                    <input name="name" type="text" class="form-control" style="display: inline; width: 20%;"
+                           placeholder="Name" autocomplete="off">
+                    <input name="value" type="text" class="form-control" style="display: inline; width: 63%;"
+                           placeholder="Xpath Pattern" autocomplete="off">
+                    <select class="form-control" name="type" style="display:inline; width: 100px;">
+                      <option value="single">Single</option>
+                      <option value="list">List</option>
+                    </select>
+                    <button type="button" class="btn btn-danger" @click="deleteQuery(index)">Delete</button>
+                </div>
+            </div>
+            <button id="search" class="btn btn-success" type="button">Submit</button>
+        </form>
+        <div class="card" style="margin-top: 20px;">
+            <div class="card-header">
+                Crawled Result
+            </div>
+            <div class="card-body">
+                <pre id="json"></pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            inputs: [],
+            urls: [],
+            test: 'test'
+        },
+        mounted: function() {
+            this.addURL();
+            this.addQuery();
+        },
+        methods: {
+            addQuery() {
+                this.inputs.push(true);
+            },
+            deleteQuery(index) {
+                this.inputs.splice(index, 1);
+            },
+            addURL() {
+                this.urls.push(true);
+            },
+            deleteURL(index) {
+                this.urls.splice(index, 1);
+            },
+        }
+    })
+
+</script>
+<script>
+    $(document).ready(function(){
+        $("#search").click(function(){
+            $("#json").html('<h3>Working hard...</h3>');
+            var formData = $("#searchForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "{% url 'spider:crawler_add' %}",
+                data: formData,
+                delay: 250,
+                dataType: 'JSON',
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                }
+            }).done(function(json){
+                $("#json").html(JSON.stringify(json, undefined, 2));
+            });
+        });
+    });
+
+</script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Word Search</title>
+        {% include 'includes/css.html' %}
+    </head>
+    <body>
+        <div class="container">
+            {% include 'includes/navbar.html' %}
+            {% block contents %}{% endblock %}
+        </div>
+        {% include 'includes/js.html' %}
+        {% block scripts %}{% endblock %}
+    </body>
+</html>
