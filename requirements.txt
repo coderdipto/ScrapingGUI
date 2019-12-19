@@ -1,6 +1,7 @@
-django
+django==2.0.7
 scrapy
 djangorestframework
 scrapyd 
 python-scrapyd-api
 requests
+django-heroku
