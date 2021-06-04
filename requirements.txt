@@ -1,4 +1,4 @@
-django==2.2.13
+django==2.2.21
 scrapy==1.8.0
 djangorestframework==3.11.0
 scrapyd==1.2.1
